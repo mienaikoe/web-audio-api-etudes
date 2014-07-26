@@ -1,4 +1,4 @@
-/* Web Audio API - Experiment 1
+/* Web Audio API - Experiment 3
  * 
  * This experiment is the most basic setup you can have to hear a real sound from the Web Audio API.
  * - Create an AudioContext
