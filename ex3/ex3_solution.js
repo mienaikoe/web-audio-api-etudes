@@ -1,18 +1,37 @@
-/* Web Audio API - Experiment 1
+/* Web Audio API - Experiment 3
  * 
- * This experiment is the most basic setup you can have to hear a real sound from the Web Audio API.
+ * This experiment shows how to use an OscillatorNode to modulate an AudioParam on a Filter.
  * - Create an AudioContext
- * - Create an Oscillator
- * - Connect the Oscillator to the Context's destination
- * - Start playing the oscillator
+ * - Create a sound Oscillator
+ * - Create a BiquadFilter
+ * - Set the BiquadFilter Frequency to a middletone frequency like 300 Hz
+ * - Create an LF Oscillator
+ * - Set the frequency on the LF Oscillator to 3Hz and start it
+ * - Create a Multiplier Gain Node.
+ * - Connect the LFO to the detune AudioParam on the Biquad Filter
+ * - connect the main sound pathways
+ * - Start the sound oscillator
  * 
  */
 
+var ctx = new AudioContext();
 
-var ctx = new AudioContext(); // Instantiates an AudioContext for the Web Audio API, and starts counting up.
+var soundOscillator = ctx.createOscillator();
 
-var oscillator = ctx.createOscillator(); // creates a new Audio Node which produces an oscillating signal.
+var filter = ctx.createBiquadFilter();
+filter.frequency.value = 300;
 
-oscillator.connect(ctx.destination); // creates a connection from the oscillating signal generator to the Computer Speakers.
+var lfo = ctx.createOscillator();
+lfo.frequency.value = 3;
+lfo.start(0);
 
-oscillator.start(0); // starts the oscillator immediately.
+var lfoMultiplier = ctx.createGain();
+lfoMultiplier.gain.value = 1000;
+
+lfo.connect(lfoMultiplier); 
+lfoMultiplier.connect(filter.detune); // This is where the lfo is connected to the detune AudioParam
+
+soundOscillator.connect(filter);
+filter.connect(ctx.destination);
+
+soundOscillator.start(0);
