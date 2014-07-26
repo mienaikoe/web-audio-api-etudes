@@ -1,18 +1,30 @@
 /* Web Audio API - Experiment 2
  * 
- * This experiment is the most basic setup you can have to hear a real sound from the Web Audio API.
+ * This experiment shows how to use the GainNode and AudioBufferSourceNode.
  * - Create an AudioContext
- * - Create an Oscillator
- * - Connect the Oscillator to the Context's destination
- * - Start playing the oscillator
- * 
+ * - Create a GainNode
+ * - Dial the Gain value
+ * - Create an AudioBufferSourceNode
+ * - Connect it all together
+ * - Set the buffer
+ * - Play the buffer at a random time within 10 seconds
  */
 
+var ctx = new AudioContext();
 
-var ctx = new AudioContext(); // Instantiates an AudioContext for the Web Audio API, and starts counting up.
+var gain = ctx.createGain();
+gain.gain.value = 0.5;	// gain value is from 0(mute) to 1(full)
 
-var oscillator = ctx.createOscillator(); // creates a new Audio Node which produces an oscillating signal.
+var source = ctx.createBufferSource();
 
-oscillator.connect(ctx.destination); // creates a connection from the oscillating signal generator to the Computer Speakers.
+source.connect(gain);
+gain.connect(ctx.destination);
 
-oscillator.start(0); // starts the oscillator immediately.
+source.setBuffer(WebAudioEtudes.randomVibraphoneSample()).then(
+function(){
+	var startTime = ctx.currentTime + (Math.random() * 10);
+	source.start(startTime);
+}, 
+function(error){
+	console.error(error);
+});

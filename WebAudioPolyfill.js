@@ -52,5 +52,5 @@ AudioBufferSourceNode.prototype.setBuffer = function(bufferUrl){
 			console.error(err);
 			bad("Error fetching Buffer Source with URL: "+bufferUrl);
 		}
-	});
+	}.bind(this));
 };
