@@ -1,4 +1,4 @@
-web-audio-api-etudes
+web-audio-experiments
 ====================
 
 Small Experiments and Exercises with the Web Audio API
